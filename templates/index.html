@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Diabetes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat pulse"></i>
+                    <div class="logo-text">
+                        <h1>Deteksi Diabetes</h1>
+                        <p>Menggunakan Metode Backpropagation Neural Network</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <section class="prediction-section">
+                    <div class="card main-card">
+                        <div class="card-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h2>Form Prediksi</h2>
+                        </div>
+                        <form id="predictionForm" class="form-grid">
+                            <div class="form-group">
+                                <label for="Pregnancies">
+                                    <i class="fas fa-baby"></i>
+                                    Jumlah Kehamilan
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="Pregnancies" name="Pregnancies" required min="0" placeholder="0-17">
+                                    <div class="input-hint">Rentang normal: 0-17</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="Glucose">
+                                    <i class="fas fa-tint"></i>
+                                    Kadar Glukosa
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="Glucose" name="Glucose" required min="0" placeholder="70-140">
+                                    <div class="input-hint">Rentang normal: 70-140 mg/dL</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="BloodPressure">
+                                    <i class="fas fa-heart"></i>
+                                    Tekanan Darah
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="BloodPressure" name="BloodPressure" required min="0" placeholder="60-120">
+                                    <div class="input-hint">Rentang normal: 60-120 mm Hg</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="SkinThickness">
+                                    <i class="fas fa-ruler-vertical"></i>
+                                    Ketebalan Kulit
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="SkinThickness" name="SkinThickness" required min="0" placeholder="10-50">
+                                    <div class="input-hint">Rentang normal: 10-50 mm</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="Insulin">
+                                    <i class="fas fa-syringe"></i>
+                                    Kadar Insulin
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="Insulin" name="Insulin" required min="0" placeholder="16-166">
+                                    <div class="input-hint">Rentang normal: 16-166 mu U/ml</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="BMI">
+                                    <i class="fas fa-weight"></i>
+                                    Indeks Massa Tubuh
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="BMI" name="BMI" required step="0.1" min="0" placeholder="18.5-24.9">
+                                    <div class="input-hint">Rentang normal: 18.5-24.9</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="DiabetesPedigreeFunction">
+                                    <i class="fas fa-dna"></i>
+                                    Riwayat Diabetes
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" required step="0.001" min="0" placeholder="0.078-2.42">
+                                    <div class="input-hint">Rentang: 0.078-2.42</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="Age">
+                                    <i class="fas fa-user-clock"></i>
+                                    Usia
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="Age" name="Age" required min="0" placeholder="21-81">
+                                    <div class="input-hint">Rentang dalam dataset: 21-81 tahun</div>
+                                </div>
+                            </div>
+                            
+                            <div class="button-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-calculator"></i>
+                                    Prediksi
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="fillSampleData()">
+                                    <i class="fas fa-fill-drip"></i>
+                                    Isi Data Contoh
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="result" class="card result-card" style="display: none;">
+                        <div class="result-content">
+                            <div class="result-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h2>Hasil Prediksi</h2>
+                            <div class="result-details">
+                                <p id="predictionText" class="prediction-text"></p>
+                                <p id="probabilityText" class="probability-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="trainingHistory" class="history-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h2>Grafik Riwayat Pelatihan Model</h2>
+                        </div>
+                        <div class="chart-container">
+                            <img src="{{ url_for('static', filename='training_history.png') }}" 
+                                 alt="Riwayat Pelatihan" 
+                                 class="history-chart">
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function fillSampleData() {
+            document.getElementById('Pregnancies').value = '1';
+            document.getElementById('Glucose').value = '85';
+            document.getElementById('BloodPressure').value = '80';
+            document.getElementById('SkinThickness').value = '20';
+            document.getElementById('Insulin').value = '80';
+            document.getElementById('BMI').value = '23.5';
+            document.getElementById('DiabetesPedigreeFunction').value = '0.527';
+            document.getElementById('Age').value = '30';
+        }
+
+        $(document).ready(function() {
+            $('#predictionForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                $('.btn').prop('disabled', true);
+                
+                $.ajax({
+                    url: '/predict',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#result').fadeIn();
+                        
+                        var diagnosis = response.prediction === 'Positive' ? 'Positif' : 'Negatif';
+                        var resultClass = response.prediction.toLowerCase();
+                        
+                        $('#predictionText').html(`<strong>Diagnosis:</strong> <span class="${resultClass}">${diagnosis} diabetes</span>`);
+                        $('#probabilityText').html(`<strong>Probabilitas:</strong> ${response.probability}%`);
+                        
+                        $('#trainingHistory').fadeIn();
+                        
+                        $('html, body').animate({
+                            scrollTop: $('#result').offset().top - 20
+                        }, 500);
+                    },
+                    error: function(error) {
+                        alert('Error: ' + error.responseJSON.error);
+                    },
+                    complete: function() {
+                        $('.btn').prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
